@@ -1,0 +1,30 @@
+name: Test Socket Assignment
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout student code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install pytest
+
+      - name: Fetch test file
+        env:
+          TEST_FILE_URL: ${{ secrets.TEST_FILE_URL }}
+          TEST_FILE_TOKEN: ${{ secrets.TEST_FILE_TOKEN }}
+        run: curl -H "Authorization: token $TEST_FILE_TOKEN" -L $TEST_FILE_URL -o test_socket.py
+
+      - name: Run tests
+        run: pytest test_socket.py --verbose
