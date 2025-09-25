@@ -24,7 +24,8 @@ jobs:
         env:
           TEST_FILE_URL: ${{ secrets.TEST_FILE_URL }}
           TEST_FILE_TOKEN: ${{ secrets.TEST_FILE_TOKEN }}
-        run: curl -H "Authorization: token $TEST_FILE_TOKEN" -L $TEST_FILE_URL -o test_socket.py
+        run: |
+          curl -H "Authorization: token $TEST_FILE_TOKEN" -L $TEST_FILE_URL -o test_socket.py
 
       - name: Run tests
         run: pytest test_socket.py --verbose
